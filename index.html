@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css" />
+    <script src="main.js"></script>
+    <title>pokemonApi</title>
+</head>
+
+<body>
+    <main class="container">
+        <article x-data="pokemonApp">
+            
+            <header>
+                <h1 class="logo" style="text-align: center;">
+                    <img src="./img/pokemon-logo.png" width="200">
+                </h1>
+
+                <div style="position: relative;">
+                    <input 
+                        type="search"
+                        placeholder="Digite o nome do Pokémon"
+                        x-model="pokemonName"
+                        @keydown.enter.prevent="fetchPokemon"
+                    />
+                    <ul x-show="filteredPokemons.length > 0">
+
+        <template x-for="pokemon in filteredPokemons" :key="pokemon.name">        
+            <li x-text="pokemon.name"
+            style="padding: 8px;"></li>
+        </template>
+
+        </ul>
+        </div>
+            </header>
+
+            <div x-show="loading">
+                <progress></progress>
+            </div>
+
+            <div class="pokemon-list">
+            <template x-for="pokemon in pokemons" :key="pokemon.name">
+    <section>
+        <div class="pokemon-header">
+        <h3 x-text="pokemon.name"></h3>
+        <span class="type-badge" x-text="pokemon.type"></span>
+        </div>
+        <img :src="pokemon.sprite" width="120">
+        <button @click="addFavorite(pokemon)">
+            ⭐
+        </button>
+    </section>
+</template>
+            </div>
+
+            <hr>
+            <h2>Favoritos</h2>
+
+            <template x-if="favorites.length === 0">
+                <p>Nenhum favorito ainda</p>
+            </template>
+
+            <ul>
+                <template x-for="pokemon in favorites" :key="pokemon.name">
+                    <li>
+                        <div style="display:flex; justify-content:space-between; align-items:center;">
+                            <div style="display:flex; align-items:center; gap:10px;">
+                                <img :src="pokemon.sprite">
+                                <strong x-text="pokemon.name"></strong>
+                            </div>
+                            <button 
+                                class="secondary"
+                                @click="removeFavorite(pokemon.name)"
+                            >
+                                Remover
+                            </button>
+                        </div>
+                    </li>
+                </template>
+            </ul>
+
+        </article>
+    </main>
+</body>
+</html>
